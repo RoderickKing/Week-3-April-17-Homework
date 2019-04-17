@@ -1,0 +1,60 @@
+Tasks :
+
+
+2 :
+
+SelectView:
+
+1. subscribe('Animals:all-animals-ready'). All data items
+2. publish('SelectView:change' : Data is the index of the selected item.
+
+
+AnimalInfoView:
+
+1 . subscribe('Animals:selected-animal-ready' : Data is all attributes of birds.
+received fron Animals
+
+Animals:
+1. publish('Animals:all-animals-ready') with all animal data from the selected item
+   Needed in SelectView
+
+2 . subscribe('SelectView:change') from SelectView: Data is all items about Animals data. Received from SelectView
+
+3. publish('Animals:selected-animal-ready':  Needed in AnimalInfoView:
+
+
+
+
+
+
+
+
+
+Questions
+1) What the model Animals responsible for?
+Animals is essentially a data providing module, triggering a publish on "Animals:all-animals-ready".
+
+Provides a publish ('Animals:all-animals-ready', this.animals). Enables data loading.
+Subscribes to ('SelectView:change') i.e. waiting for a drop down list item to be selected.
+This is turn triggers publish('Animals:selected-animal-ready') in readiness for picking up in Animal_info_View.
+
+
+2) What is the view SelectView responsible for?
+1 : It reacts to when the "Animals:all-animals-ready" flag is set from the Animals class.
+2: Once the drop down list item has been selected from the list the "SelectView:change" is listened
+3: Once the event in item 2 in the list is invoked it publishes 'Animals:selected-animal-ready' with the selected Animal data ready for another class to receive.
+
+
+3) What does the SelectView's populate method do?
+
+For each animal object passed to it, a new "Option" element is appened to the drop dropdown list.  This only contains the species property of the object.
+In addition the index value is also populated but is invisible to the user.
+
+4) What is the view AnimalInfoView responsible for?
+
+Once the "Animals:selected-animal-ready" is published i.e. the user has selected from the from down list, the full details of the selected species are dislayed in a new paragraph element which is dynamically created in the DOM.
+
+
+5 What is app.js responsible for?
+This module kicks off all of the Publish / Subscribe cycles ready for the events to occur.  That is loading all data and selecting an item from the drop down list.
+It demonstrates the asynchronus nature of Javascript code because it is not used again.
